@@ -1,11 +1,11 @@
 var request = require('request')
 var nodemailer = require('nodemailer')
-var querystring = require('querystring')
+var url = require('url')
 
 var config = require('../config.js')
+var transport = require(config.mailTransportModule)
 var mailer = nodemailer.createTransport(
-  config.mailTransportType,
-  config.mailTransportSettings
+  transport(config.mailTransportSettings)
 )
 
 module.exports = {
@@ -231,24 +231,9 @@ function createTrial(res,customer) {
 function sendVerificationEmail(res,customer,trial) {
 
   var from = config.emailFrom
-  /*
   var mail = {
     to: '"' + customer.name + '" <' + customer.email + '>',
     from: '" npm Enterprise " <' + from + '>',
-    subject : "npm Enterprise trial: please verify your email",
-    text: "Hi " + customer.name + " -\r\n\r\n" +
-      "Thanks for trying out npm Enterprise!\r\n\r\n" +
-      "To get started, please click this link to verify your email address:\r\n\r\n" +
-      "https://" + config.host + "/enterprise-verify?v=" + trial.verification_key + "\r\n\r\n" +
-      "Thanks!\r\n\r\n" +
-      "If you have questions or problems, you can reply to this message,\r\n" +
-      "or email " + from + "\r\n" +
-      "\r\n\r\nnpm loves you.\r\n"
-  }
-  */
-  var mail = {
-    to: '"' + customer.name + '" <' + customer.email + '>',
-    from: from,
     subject: "npm Enterprise: please verify your email",
     text: "Hi " + customer.name + " -\r\n\r\n" +
       "Thanks for trying out npm Enterprise!\r\n\r\n" +
@@ -277,7 +262,8 @@ function signUpStep3(req, res) {
 
 // when the click the verification link in the email
 function signUpStep4(req, res) {
-  var qs = querystring.parse(req.url)
+  var qs = url.parse(req.url,true).query
+  console.warn("step 4 query:",qs)
   if (!qs.v) {
     var td = {
       title: "Error verifying email",
@@ -293,6 +279,7 @@ function signUpStep4(req, res) {
 function verifyTrial(model,res,verificationKey) {
 
   var trialEndpoint = config.license.api + '/trial'
+  console.warn("Looking for verification key",verificationKey)
 
   // first see if there's a trial with this verification key
   request.get({
@@ -300,31 +287,35 @@ function verifyTrial(model,res,verificationKey) {
     json: true
   },function(er,httpResponse,trial) {
     if (httpResponse.statusCode == 200) {
-      // trial exists, so verify it
-      request.put({
-        url: trialEndpoint + '/' + trial.id + '/verification',
-        json: true
-      },function(er,httpResponse,license) {
-        console.warn("trial verification response:",httpResponse.statusCode)
-        // if verification failed, stop
-        if(httpResponse.statusCode != 200) {
-          var td = {
-            title: "Problem with verification",
-            errorMessage: "There was a problem starting your trial",
-            errorCode: "4001"
+      // trial exists. is it already verified?
+      if (trial.verified) {
+        sendAndShowLicense(model,res,trial)
+      } else {
+        // need to verify the trial, which will also create the license
+        request.put({
+          url: trialEndpoint + '/' + trial.id + '/verification',
+          json: true
+        },function(er,httpResponse,verifiedTrial) {
+          console.warn("trial verification response:",httpResponse.statusCode)
+          // if verification failed, stop
+          if(httpResponse.statusCode != 200) {
+            var td = {
+              title: "Problem with verification",
+              errorMessage: "There was a problem starting your trial",
+              errorCode: "5001"
+            }
+            return res.template('enterprise-error.ejs',td)
           }
-          return res.template('enterprise-error.ejs',td)
-        }
-        // output of a verification is a license
-        sendAndShowLicense(model, res, license) // ugh fucking gumby baton model
-      })
+          sendAndShowLicense(model,res,verifiedTrial)
+        })
+      }
     }
     else if (httpResponse.statusCode == 404) {
       // can't find a trial for that key
       var td = {
         title: "Problem verifying trial",
         errorMessage: "Your verification key was not found",
-        errorCode: "4002"
+        errorCode: "5002"
       }
       return res.template('enterprise-error.ejs',td)
     } else {
@@ -332,7 +323,7 @@ function verifyTrial(model,res,verificationKey) {
       var td = {
         title: "Problem verifying trial",
         errorMessage: "There was an unknown problem with your trial",
-        errorCode: "4003"
+        errorCode: "5003"
       }
       return res.template('enterprise-error.ejs', td)
     }
@@ -340,14 +331,27 @@ function verifyTrial(model,res,verificationKey) {
 
 }
 
-function sendAndShowLicense(model, res,license) {
+function sendAndShowLicense(model, res, trial) {
 
   var requirementsUrl = "https://docs.npmjs.com/enterprise/installation#requirements"
   var instructionsUrl = "https://docs.npmjs.com/enterprise/installation"
 
-  model.load('customer',license.customer_id)
+  model.load('customer',trial.customer_id)
+  model.load('licenses',config.npme.product_id,trial.customer_id)
   model.end(function(er,data) {
     var customer = data.customer
+    var licenses = data.licenses
+    // zero licenses bad, more than one license confusing
+    if (licenses.length != 1) {
+      var td = {
+        title: "Problem displaying license",
+        errorMessage: "There was an unknown problem with your trial license",
+        errorCode: "6001"
+      }
+      return res.template('enterprise-error.ejs', td)
+    }
+    // all good. send the license via email
+    var license = licenses[0]
     var from = config.emailFrom
     var mail = {
       to: '"' + customer.name + '" <' + customer.email + '>',
@@ -359,7 +363,7 @@ function sendAndShowLicense(model, res,license) {
         requirementsUrl + "\r\n\r\n" +
         "Then simply run\r\n\r\n" +
         "npm install npme\r\n\r\n" +
-        "That's it! When prompted, provide the following information:\r\n" +
+        "That's it! When prompted, provide the following information:\r\n\r\n" +
         "billing email: " + customer.email + "\r\n" +
         "license key: " + license.license_key + "\r\n\r\n" +
         "For help with the other questions asked during the installation, read " +
