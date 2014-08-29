@@ -1,0 +1,27 @@
+<%- include('header.ejs', locals) %>
+
+<h1>npm Enterprise</h1>
+
+<p>Thank you for trying out npm Enterprise!</p>
+
+<p>To get started, make sure you have a machine that meets the
+  <a href="<%= requirementsUrl %>">installation requirements</a>, then
+  simply run:
+  <code>
+    npm install npme
+  </code>
+  That's it! When prompted, provide the following information:<br>
+  Billing email: <%= email %><br>
+  License key: <%= license_key %><br>
+
+  <p>The installation process will ask you questions about your local
+  environment. For help with supplying the correct values, please refer to the
+  <a href="<%= instructionsUrl %>">npm Enterprise documentation</a>. If you
+  have any trouble, you can also always contact
+  <a href="mailto:<%= supportEmail %>"><%= supportEmail %></a>.
+
+  <p>A copy of your license key and these instructions has been emailed to
+  <%= email %>.
+</p>
+
+<%- include('footer.ejs', locals) %>

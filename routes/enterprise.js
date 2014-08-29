@@ -13,10 +13,10 @@ function npme (req, res) {
     td.hiring = m.whoshiring
 
     if (req.pathname.indexOf('thanks') !== -1) {
-      return res.template('npme-beta-thanks.ejs', td)
+      return res.template('enterprise-thanks.ejs', td)
     }
 
-    return res.template('npme-beta.ejs', td)
+    return res.template('enterprise.ejs', td)
   })
 }
 
