@@ -93,5 +93,13 @@
     "description": "<a href='http://www.nutanix.com/careers/current-openings/'>Nutanix</a> is one of the fastest growing infrastructure companies of all time and is looking for passionate JS engineers to expand our web team!",
     "url": "http://www.nutanix.com/careers/current-openings/",
     "show_weight": 1
+  },
+
+  "lob": {
+    "id": "lob",
+    "name": "lob.com",
+    "description": "<a href='https://www.lob.com/'>Lob.com</a> is looking for node.js engineers who are passionate about building APIs to join our team in San Francisco.",
+    "url": "https://www.lob.com/jobs",
+    "show_weight": 1
   }
 }
