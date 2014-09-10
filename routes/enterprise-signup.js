@@ -12,7 +12,8 @@ module.exports = {
   signUpStep1: signUpStep1,
   signUpStep2: signUpStep2,
   signUpStep3: signUpStep3,
-  signUpStep4: signUpStep4
+  signUpStep4: signUpStep4,
+  contactMe: contactMe
 }
 
 // when they submit the initial signup form
@@ -26,43 +27,58 @@ function signUpStep1(req, res) {
   })
 }
 
-function createHubspotLead(model,res,data) {
+// generic method to hit hubspot
+function postToHubspot(formGuid,data,cb) {
   var hubspot = config.license.hubspot.forms
     .replace(":portal_id",config.license.hubspot.portal_id)
-    .replace(":form_guid",config.license.hubspot.form_npme_signup)
+    .replace(":form_guid",formGuid)
 
-  // we don't have a good way to check if they already have a hubspot lead
-  // so just post every time.
   var req = request.post(hubspot,function(er,httpResponse,body) {
-    // it shouldn't really be 302 but we can't seem to make it stop redirecting
+    // sometimes it's 302 and we don't care if that happens
     if (httpResponse.statusCode == 204 || httpResponse.statusCode == 302) {
-      return getOrCreateCustomer(model,res,data)
+      cb()
     } else {
-      console.warn("Could not contact hubspot")
-      var td = {
-        title: "Problem with signup",
-        errorMessage: "",
-        errorCode: "1001"
-      }
-      return res.template('enterprise-error.ejs', td)
+      var err = new Error("Unexpected status code: " + httpResponse.statusCode)
+      console.warn(err)
+      cb(err)
     }
-
-  }).form({
-    comments: data.comments,
-    firstname: data.firstname,
-    lastname: data.lastname,
-    email: data.email,
-    phone: data.phone,
-    company: data.company,
-    numemployees: data.numeployees,
-    hs_context: {
-      pageName: "enterprise-signup"
-    }
-  })
-
-
+  }).form(data)
 }
 
+// initial hubspot contact creation. Everybody gets one.
+function createHubspotLead(model,res,data) {
+
+  postToHubspot(
+    config.license.hubspot.form_npme_signup,
+    {
+      comments: data.comments,
+      firstname: data.firstname,
+      lastname: data.lastname,
+      email: data.email,
+      phone: data.phone,
+      company: data.company,
+      numemployees: data.numeployees,
+      hs_context: {
+        pageName: "enterprise-signup"
+      }
+    },
+    function(er) {
+      if(er) {
+        console.warn("Could not contact hubspot signup form")
+        var td = {
+          title: "Problem with signup",
+          errorMessage: "Could not register your details",
+          errorCode: "1001"
+        }
+        return res.template('enterprise-error.ejs', td)
+      } else {
+        return getOrCreateCustomer(model,res,data)
+      }
+    }
+  )
+}
+
+// after creating hubspot contact, create an internal customer
 function getOrCreateCustomer(model,res,data) {
 
   model.load('customer',data.email)
@@ -109,6 +125,7 @@ function getOrCreateCustomer(model,res,data) {
   })
 }
 
+// once we have a customer, show the click-through-or-contact-me choice
 function showClickThroughAgreement(res,customer) {
   // we use both email and ID so people can't just guess an ID to get a license
   var td = {
@@ -119,16 +136,77 @@ function showClickThroughAgreement(res,customer) {
   return res.template('enterprise-signup-2.ejs',td)
 }
 
-// when they agree to the ULA
+// if they decide not to agree to the ULA
+// hit the hubspot contact-me form instead, and thank them
+function contactMe(req,res) {
+
+  if (req.method != "POST") {
+    return res.error(405)
+  }
+  req.maxLen = 1024 * 1024
+  return req.on('form', function (data) {
+    postToHubspot(
+      config.license.hubspot.form_npme_contact_me,
+      {
+        email: data.contact_customer_email
+      },
+      function(er) {
+        if (er) {
+          console.warn("Could not contact hubspot")
+          var td = {
+            title: "Problem with signup",
+            errorMessage: "Could not register you to be contacted. Contact support.",
+            errorCode: "2004"
+          }
+          return res.template('enterprise-error.ejs', td)
+        } else {
+          var td = {
+            title: "We will contact you shortly"
+          }
+          return res.template('enterprise-contact-me.ejs',td)
+        }
+      }
+    )
+  })
+}
+
+// if they agree to the ULA, notify hubspot, create a trial and send verification link
 function signUpStep2(req,res) {
   if (req.method != "POST") {
     return res.error(405)
   }
   return req.on('form', function(data) {
-    checkCustomerExists(req.model,res,data)
+    tellHubspotAboutULA(req.model,res,data)
   })
 }
 
+// tell hubspot they signed the ULA
+function tellHubspotAboutULA(model,res,data) {
+
+  postToHubspot(
+    config.license.hubspot.form_npme_agreed_ula,
+    {
+      email: data.customer_email
+    },
+    function(er) {
+      if(er) {
+        console.warn("Could not hit ULA notification form on Hubspot")
+        var td = {
+          title: "Problem with signup",
+          errorMessage: "Could not register your agreement to the license",
+          errorCode: "2005"
+        }
+        return res.template('enterprise-error.ejs',td)
+      } else {
+        checkCustomerExists(model,res,data)
+      }
+    }
+  )
+
+}
+
+
+// make sure customers exist before trying to create a trial
 function checkCustomerExists(model,res,data) {
   model.load('customer',data.customer_email)
   model.end(function(er,modelData) {
@@ -168,6 +246,7 @@ function checkCustomerExists(model,res,data) {
   })
 }
 
+// we found the customer, create the trial for them
 function createTrial(res,customer) {
 
   var trialEndpoint = config.license.api + '/trial'
@@ -194,6 +273,7 @@ function createTrial(res,customer) {
       },function(er,httpResponse,trial) {
         // stop if we couldn't create the trial
         if(httpResponse.statusCode != 200) {
+          console.warn("Error from trial creation, status " + httpResponse.statusCode)
           var td = {
             title: "Problem with signup",
             errorMessage: "There was a problem creating your trial",
@@ -210,6 +290,7 @@ function createTrial(res,customer) {
       return sendVerificationEmail(res,customer,body)
     } else {
       // trial API problem of some kind
+      console.warn("Problem with trial fetch, status " + httpResponse.statusCode + ", body " + body)
       var td = {
         title: "Problem with signup",
         errorMessage: "There was an unknown problem with your trial",
@@ -221,6 +302,7 @@ function createTrial(res,customer) {
 
 }
 
+// trial created, send verification link to activate it
 function sendVerificationEmail(res,customer,trial) {
 
   var from = config.emailFrom
@@ -252,7 +334,7 @@ function sendVerificationEmail(res,customer,trial) {
 
 }
 
-// when they submit the initial signup form
+// tell them to go check their email
 function signUpStep3(req, res) {
   var td = {
     title: "Thanks for signing up for npm Enterprise!"
@@ -260,7 +342,7 @@ function signUpStep3(req, res) {
   return res.template('enterprise-signup-3.ejs',td)
 }
 
-// when the click the verification link in the email
+// when they click the verification link in the email
 function signUpStep4(req, res) {
   var qs = url.parse(req.url,true).query
   if (!qs.v) {
@@ -275,6 +357,7 @@ function signUpStep4(req, res) {
   verifyTrial(req.model,res,qs.v)
 }
 
+// verify the trial key is good (this also verifies the email address works)
 function verifyTrial(model,res,verificationKey) {
 
   var trialEndpoint = config.license.api + '/trial'
@@ -328,6 +411,7 @@ function verifyTrial(model,res,verificationKey) {
 
 }
 
+// trial verified, so email them license instructions and show them here
 function sendAndShowLicense(model, res, trial) {
 
   var requirementsUrl = "https://docs.npmjs.com/enterprise/installation#requirements"

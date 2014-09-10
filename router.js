@@ -82,6 +82,7 @@ router.addRoute('/enterprise', require('./routes/enterprise.js'))
 router.addRoute('/enterprise-signup-1', require('./routes/enterprise-signup.js').signUpStep1)
 router.addRoute('/enterprise-signup-2', require('./routes/enterprise-signup.js').signUpStep2)
 router.addRoute('/enterprise-signup-3', require('./routes/enterprise-signup.js').signUpStep3)
+router.addRoute('/enterprise-signup-alternative', require('./routes/enterprise-signup.js').contactMe)
 router.addRoute('/enterprise-thanks', require('./routes/enterprise.js'))
 router.addRoute('/enterprise-verify', require('./routes/enterprise-signup.js').signUpStep4)
 

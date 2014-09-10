@@ -12,10 +12,6 @@ function npme (req, res) {
     td.profile = m.profile
     td.hiring = m.whoshiring
 
-    if (req.pathname.indexOf('thanks') !== -1) {
-      return res.template('enterprise-thanks.ejs', td)
-    }
-
     return res.template('enterprise.ejs', td)
   })
 }
