@@ -72,7 +72,7 @@ function decorate (req, res, config) {
     res.setHeader('strict-transport-security',
                   'max-age=' + (1000 * 60 * 60 * 24 * 30) + '; includeSubDomains')
   }
-  res.setHeader('Content-Security-Policy', "default-src 'self'; img-src *; script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com https://checkout.stripe.com https://js.hs-analytics.net https://js.hsforms.net/forms/current.js https://forms.hubspot.com https://internal.hubapi.com https://api.hubapi.com; frame-src https://checkout.stripe.com https://player.vimeo.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://typeahead.npmjs.com/; report-uri /-/csplog;")
+  res.setHeader('Content-Security-Policy', "default-src 'self'; img-src *; script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com https://checkout.stripe.com https://js.hs-analytics.net https://js.hsforms.net/forms/current.js https://forms.hubspot.com https://internal.hubapi.com https://api.hubapi.com; frame-src https://checkout.stripe.com www.youtube.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://typeahead.npmjs.com/; report-uri /-/csplog;")
   res.setHeader('X-Frame-Options', 'DENY')
   res.setHeader('X-Content-Type-Options', 'nosniff')
 
