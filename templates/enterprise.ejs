@@ -28,11 +28,11 @@ and the public npm registry. It's designed for teams that need:
 
 <h3>See it in action</h3>
 
-<iframe src="//player.vimeo.com/video/101880670" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<iframe width="480" height="360" src="//www.youtube.com/embed/FJyVsD8xs14?rel=0" frameborder="0" allowfullscreen></iframe>
 
-<h3><a name="private">npmE is private npm</a></h3>
+<h3><a name="private">npm Enterprise is private npm</a></h3>
 
-<p>npmE is an npm registry that works with the same standard npm client you
+<p>npm Enterprise is an npm registry that works with the same standard npm client you
 already use, but provides the features needed by larger organizations who
 are now enthusiastically adopting node. It's built by npm, Inc., the sponsor
 of the npm open source project and the host of the public npm registry.</p>
@@ -42,8 +42,9 @@ of the npm open source project and the host of the public npm registry.</p>
 <p>Lots of companies using Node.js love the "many small modules" pattern that is
 part of the Node culture. However, splitting internal applications and private
 code up into small modules has been inconvenient, requiring git dependencies or
-other workarounds to avoid publishing sensitive code to the public registry. npmE
-makes private modules a first-class citizen. Just log in to your registry:
+other workarounds to avoid publishing sensitive code to the public registry. npm
+Enterprise makes private modules a first-class citizen. Just log in to your
+registry:
 
 <p><code>npm login --registry=http://myreg.mycompany.com --scope=myco</code></p>
 
@@ -53,8 +54,8 @@ you do with public modules:</p>
 <p><code>npm install @myco/somepackage</code></p>
 
 <p>npm automatically knows that any package with the <code>@myco</code> scope
-should be installed from your npmE installation. Scoped packages will be
-installed into your <code>node_modules</code> folder and can be used in your
+should be installed from your npm Enterprise installation. Scoped packages will
+be installed into your <code>node_modules</code> folder and can be used in your
 JavaScript just like any other module:</p>
 
 <pre><code>
@@ -75,8 +76,8 @@ a scope in package.json:</p>
 
 <p><code>npm publish</code></p>
 
-<p>npm will automatically publish to your npmE, and will refuse to publish
-scoped packages to the public registry.</p>
+<p>npm will automatically publish to your npm Enterprise, and will refuse to
+publish scoped packages to the public registry.</p>
 
 <h3><a name="conflicts">Eliminate conflicts with public modules</a></h3>
 
@@ -90,12 +91,14 @@ that accidentally conflicts with an existing public package.</p>
 
 <h3><a name="compatible">Works in concert with the public npm registry</a></h3>
 
-<p>Depending on your security preferences, you can work with npmE in two ways:
+<p>Depending on your security preferences, you can work with npm Enterprise in
+two ways:
 <ol>
-  <li>use it to host only your private modules, and use the public npm registry for
-    any un-scoped modules, or</li>
-  <li>configure npm to use your local npmE server for all modules, and use npmE
-  to mirror the public packages you have approved for internal use</li>
+  <li>use it to host only your private modules, and use the public npm registry
+    for any un-scoped modules, or</li>
+  <li>configure npm to use your local npm Enterprise server for all modules, and
+    use npm Enterprise to mirror the public packages you have approved for
+    internal use</li>
 </ol>
 
 <p>This can be configured per-client, so your developers and your build server
@@ -104,7 +107,7 @@ from.</p>
 
 <h3><a name="mirror">Selectively mirror the public registry</a></h3>
 
-<p>npmE goes beyond a simple local cache of the registry. It allows you to
+<p>npm Enterprise goes beyond a simple local cache of the registry. It allows you to
   selectively mirror the public registry, automatically inspecting every new and
   updated package available in the public registry and applying a security
   policy to determine if it should be made available locally. You can use
@@ -121,16 +124,16 @@ from.</p>
 
 <h3><a name="install">npm install npmE</a></h3>
 
-<p>npmE runs locally, on a server you control, with no external dependencies
-  (mirroring the public registry of course requires external internet access,
-  but mirroring is optional). Many organizations want this for security,
-  regulatory, or operational reasons.
+<p>npm Enterprise runs locally, on a server you control, with no external
+  dependencies (mirroring the public registry of course requires external
+  internet access, but mirroring is optional). Many organizations want this for
+  security, regulatory, or operational reasons.
 
-<p>As you would expect, npmE is installed using npm! Our installation process
-asks you a series of simple questions about your local environment, and sets
-up all the services it needs to run.</p>
+<p>As you would expect, npm Enterprise is installed using npm! Our installation
+  process asks you a series of simple questions about your local environment,
+  and sets up all the services it needs to run.</p>
 
-<p>npmE has been extensively tested on CentOS 6.5 and Ubuntu 14, and is
+<p>npm Enterprise has been extensively tested on CentOS 6.5 and Ubuntu 14, and is
   supported on most recent public Linux distributions. It can run inside a
   virtual machine or on standard hardware. Since it can be configured to
   only selectively mirror the public registry in addition to your private
@@ -139,8 +142,8 @@ up all the services it needs to run.</p>
 
 <h3><a name="github">Integrates with GitHub and GitHub Enterprise</a></h3>
 
-<p>If your organization uses GitHub or GitHub Enterprise, npmE can be configured
-to automatically use them for login and access control. Simply add a
+<p>If your organization uses GitHub or GitHub Enterprise, npm Enterprise can be
+  configured to automatically use them for login and access control. Simply add a
 repository field to your package.json that points to your repo:</p>
 
 <pre><code>
@@ -152,12 +155,12 @@ repository field to your package.json that points to your repo:</p>
 }
 </code></pre>
 
-<p>Depending on your configuration, npmE can restrict installation of your
-package to users who have access to the repo for that package, and restrict
+<p>Depending on your configuration, npm Enterprise can restrict installation of
+  your package to users who have access to the repo for that package, and restrict
 publishing of that package to users who have commit access to the repo.</p>
 
-<p>npmE uses OAuth to interact with GitHub, and will support any other OAuth2
-providers. A standalone solution for authentication and authorization is
+<p>npm Enterprise uses OAuth to interact with GitHub, and will support any other
+  OAuth2 providers. A standalone solution for authentication and authorization is
 coming soon.</p>
 
 <h2><a name="contact">Try npm Enterprise for free</a></h2>
