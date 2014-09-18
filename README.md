@@ -188,7 +188,7 @@ using stylus, and it is in the `stylus` folder.
 
 * Unceremonious MVC
 
-    No big MVC class heirarchy.  Just have the route handler get some
+    No big MVC class hierarchy.  Just have the route handler get some
     data, then hand it off to a template.  Simpler is better.
 
 * Small Modules
