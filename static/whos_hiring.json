@@ -1,20 +1,4 @@
 {
-  "voxer":  {
-    "id": "voxer",
-    "name": "Voxer",
-    "description": "Come join us at <a href='http://www.voxer.com/careers/'>Voxer</a> & work on a powerful push-to-talk service! We are looking for node.js Eng, iOS/Android Eng, Ops Eng, & more!",
-    "url": "http://www.voxer.com/careers/",
-    "show_weight": 1
-  },
-
-  "ftlabs": {
-    "id": "ftlabs",
-    "name": "FTLabs",
-    "description": "The Financial Times is a global news organisation. <a href='http://labs.ft.com/jobs/'>FT Labs</a> has award-winning HTML5 expertise and runs respected <a href='https://github.com/ftlabs'>open source projects</a>.",
-    "url": "http://labs.ft.com/jobs/",
-    "show_weight": 1
-  },
-
   "brandingbrand": {
     "id": "brandingbrand",
     "name": "BrandingBrand.com",
@@ -31,43 +15,19 @@
     "show_weight": 1
   },
 
-  "newscred": {
-    "id": "newscred",
-    "name": "NewsCred",
-    "description": "We are the fastest growing start up in NYC and are looking to <a href='http://www.newscred.com/careers'>expand our team of engineers</a> to include: Automation, Sr Search, Full Stack and Javascript Engineers.",
-    "url": "http://www.newscred.com/careers",
-    "show_weight": 1
-  },
-
-  "uber": {
-    "id": "uber",
-    "name": "UBER",
-    "description": "<a href='https://www.uber.com/jobs/4807'>UBER</a> has the largest real time, distributed system built in Node.js and needs passionate contributors to scale our team to new heights.",
-    "url": "https://www.uber.com/jobs/4807",
-    "show_weight": 1
-  },
-
-  "mulesoft": {
-    "id": "mulesoft",
-    "name": "MuleSoft",
-    "description": "<a href='http://www.mulesoft.com/careers'>Mulesoft</a> is looking for node.js Developers to join our smart and talented team of Core Services engineers in San Francisco.",
-    "url": "http://www.mulesoft.com/careers",
-    "show_weight": 1
-  },
-
-  "polyvore": {
-    "id": "polyvore",
-    "name": "Polyvore",
-    "description": "<a href='http://www.polyvore.com/cgi/about.jobs'>Polyvore</a> is a profitable startup in Mountain View. Our product pushes JS to its limits, and we're looking for awesome Node.js engineers!",
-    "url": "http://www.polyvore.com/cgi/about.jobs",
+  "ftlabs": {
+    "id": "ftlabs",
+    "name": "FTLabs",
+    "description": "The Financial Times is a global news organisation. <a href='http://labs.ft.com/jobs/'>FT Labs</a> has award-winning HTML5 expertise and runs respected <a href='https://github.com/ftlabs'>open source projects</a>.",
+    "url": "http://labs.ft.com/jobs/",
     "show_weight": 1
   },
 
   "godaddy": {
     "id": "godaddy",
     "name": "GoDaddy",
-    "description": "At <a href='https://hire.jobvite.com/j?cj=orfnYfwL&s=url'>GoDaddy</a> we're crazy about JavaScript. If you're into Node.js, NoSQL, Open Source and fun then we're into you. Come join us!",
-    "url": "https://hire.jobvite.com/j?cj=orfnYfwL&s=url",
+    "description": "At <a href='https://hire.jobvite.com/j?cj=oZLhZfwK&s=npm'>GoDaddy</a> we're crazy about JavaScript. If you're into Node.js, NoSQL, Open Source and fun then we're into you. Come join us!",
+    "url": "https://hire.jobvite.com/j?cj=oZLhZfwK&s=npm",
     "show_weight": 1
   },
 
@@ -79,11 +39,43 @@
     "show_weight": 1
   },
 
+  "hired": {
+    "id": "hired",
+    "name": "Hired",
+    "description": "<a href='http://hrd.cm/XwTnIh'>Hired</a> is a candidate-focused marketplace for software devs. Our aim is to deliver a premier experience to job seekers everywhere.",
+    "url": "http://hrd.cm/XwTnIh",
+    "show_weight": 1
+  },
+
   "jut": {
     "id": "jut",
     "name": "Jut",
     "description": "<a href='http://www.jut.io'>Jut, Inc.</a> is looking for node.js developers to join our Open Source, early stage Big Data company in San Francisco.  Clean code base, amazingly successful founders - check us out.",
     "url": "http://www.jut.io/",
+    "show_weight": 1
+  },
+
+  "lob": {
+    "id": "lob",
+    "name": "lob.com",
+    "description": "<a href='https://www.lob.com/'>Lob.com</a> is looking for node.js engineers who are passionate about building APIs to join our team in San Francisco.",
+    "url": "https://www.lob.com/jobs",
+    "show_weight": 1
+  },
+
+  "mulesoft": {
+    "id": "mulesoft",
+    "name": "MuleSoft",
+    "description": "<a href='http://www.mulesoft.com/careers'>Mulesoft</a> is looking for node.js Developers to join our smart and talented team of Core Services engineers in San Francisco.",
+    "url": "http://www.mulesoft.com/careers",
+    "show_weight": 1
+  },
+
+  "newscred": {
+    "id": "newscred",
+    "name": "NewsCred",
+    "description": "We are the fastest growing start up in NYC and are looking to <a href='http://www.newscred.com/careers'>expand our team of engineers</a> to include: Automation, Sr Search, Full Stack and Javascript Engineers.",
+    "url": "http://www.newscred.com/careers",
     "show_weight": 1
   },
 
@@ -95,11 +87,27 @@
     "show_weight": 1
   },
 
-  "lob": {
-    "id": "lob",
-    "name": "lob.com",
-    "description": "<a href='https://www.lob.com/'>Lob.com</a> is looking for node.js engineers who are passionate about building APIs to join our team in San Francisco.",
-    "url": "https://www.lob.com/jobs",
+  "polyvore": {
+    "id": "polyvore",
+    "name": "Polyvore",
+    "description": "<a href='http://www.polyvore.com/cgi/about.jobs'>Polyvore</a> is a profitable startup in Mountain View. Our product pushes JS to its limits, and we're looking for awesome Node.js engineers!",
+    "url": "http://www.polyvore.com/cgi/about.jobs",
+    "show_weight": 1
+  },
+
+  "uber": {
+    "id": "uber",
+    "name": "UBER",
+    "description": "<a href='https://www.uber.com/jobs/4807'>UBER</a> has the largest real time, distributed system built in Node.js and needs passionate contributors to scale our team to new heights.",
+    "url": "https://www.uber.com/jobs/4807",
+    "show_weight": 1
+  },
+
+  "voxer":  {
+    "id": "voxer",
+    "name": "Voxer",
+    "description": "Come join us at <a href='http://www.voxer.com/careers/'>Voxer</a> & work on a powerful push-to-talk service! We are looking for node.js Eng, iOS/Android Eng, Ops Eng, & more!",
+    "url": "http://www.voxer.com/careers/",
     "show_weight": 1
   }
 }
