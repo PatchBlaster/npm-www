@@ -47,7 +47,7 @@ ret=$?
 if [ $ret -eq 0 ] && [ -x "$node" ]; then
   (exit 0)
 else
-  echo "npm cannot be installed without nodejs." >&2
+  echo "npm cannot be installed without node.js." >&2
   echo "Install node first, and then try again." >&2
   echo "" >&2
   echo "Maybe node is installed, but not in the PATH?" >&2
@@ -109,11 +109,11 @@ MAKE=NOMAKE
 
 if [ "x$MAKE" = "x" ]; then
   make=`which gmake 2>&1`
-  if [ $? -eq 0 ] && [ -x $make ]; then
+  if [ $? -eq 0 ] && [ -x "$make" ]; then
     (exit 0)
   else
     make=`which make 2>&1`
-    if [ $? -eq 0 ] && [ -x $make ]; then
+    if [ $? -eq 0 ] && [ -x "$make" ]; then
       (exit 0)
     else
       make=NOMAKE
@@ -152,14 +152,10 @@ if [ -z "$t" ]; then
   # switch based on node version.
   # note that we can only use strict sh-compatible patterns here.
   case $node_version in
-    0.[012345].* | v0.[012345].*)
+    0.[01234567].* | v0.[01234567].*)
       echo "You are using an outdated and unsupported version of" >&2
       echo "node ($node_version).  Please update node and try again." >&2
       exit 99
-      ;;
-    v0.[678].* | 0.[678].*)
-      echo "install npm@1.1"
-      t=1.1
       ;;
     *)
       echo "install npm@latest"
@@ -198,24 +194,9 @@ cd "$TMP" \
   && curl -SsL "$url" \
      | $tar -xzf - \
   && cd "$TMP"/* \
-  && (req=`"$node" bin/read-package-json.js package.json engines.node`
-      if [ -d node_modules ]; then
-        "$node" node_modules/semver/bin/semver -v "$node_version" -r "$req"
-        ret=$?
-      else
-        "$node" bin/semver.js -v "$node_version" -r "$req"
-        ret=$?
-      fi
-      if [ $ret -ne 0 ]; then
-        echo "You need node $req to run this program." >&2
-        echo "node --version reports: $node_version" >&2
-        echo "Please upgrade node before continuing." >&2
-        exit $ret
-      fi) \
   && (ver=`"$node" bin/read-package-json.js package.json version`
       isnpm10=0
       if [ $ret -eq 0 ]; then
-        req=`"$node" bin/read-package-json.js package.json engines.node`
         if [ -d node_modules ]; then
           if "$node" node_modules/semver/bin/semver -v "$ver" -r "1"
           then
@@ -255,7 +236,7 @@ cd "$TMP" \
   && (if [ "x$configures" = "x" ]; then
         (exit 0)
       else
-        echo "./configure "$configures
+        echo "./configure $configures"
         echo "$configures" > npmrc
       fi) \
   && (if [ "$make" = "NOMAKE" ]; then
