@@ -15,6 +15,14 @@
     "show_weight": 1
   },
 
+  "directlyrics": {
+    "id": "directlyrics",
+    "name": "Directlyrics",
+    "description": "<a href='http://www.directlyrics.com/programmer/'>Directlyrics</a> is building a new innovative music product and is looking for Dutch javascript talent experienced with Node.js.",
+    "url": "http://www.directlyrics.com/programmer/",
+    "show_weight": 1
+  },
+
   "ftlabs": {
     "id": "ftlabs",
     "name": "FTLabs",
