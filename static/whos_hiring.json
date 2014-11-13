@@ -103,6 +103,14 @@
     "show_weight": 1
   },
 
+  "trello" : {
+    "id": "trello",
+    "name": "Trello, Inc.",
+    "description": "<a href='https://trello.com/jobs/developer'>Trello</a> is looking for a developer who has created significant projects using node.js & is comfortable w JavaScript/CoffeeScript.",
+    "url": "https://trello.com/jobs/developer",
+    "show_weight": 1
+  },
+
   "uber": {
     "id": "uber",
     "name": "UBER",
