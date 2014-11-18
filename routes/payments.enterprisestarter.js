@@ -5,8 +5,8 @@ module.exports = payments
 
 function payments (req, res) {
   if (req.method === 'GET') {
-    return res.template('payments.ejs', {
-      title: "Join the Who's Hiring Page"
+    return res.template('payments.enterprisestarter.ejs', {
+      title: "Get the npm Enterprise Starter License"
     , stripeKey: config.stripe.publickey
     })
   }
@@ -17,11 +17,10 @@ function payments (req, res) {
   req.on('data', function (inc) {
     var token = JSON.parse(inc)
 
-    stripe.charges.create({
-      amount: token.amount,
-      currency: "usd",
+    stripe.customers.create({
       card: token.id, // obtained with Stripe.js
-      description: "Charge for " + token.email
+      plan: "enterprise-starter-pack",
+      description: token.email + " npm Enterprise Starter License"
     }, function(err, charge) {
       if (err) {
         console.error(err)

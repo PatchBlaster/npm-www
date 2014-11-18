@@ -46,6 +46,17 @@ $(document).ready(function () {
     e.preventDefault();
   });
 
+  $('#starter-pack').click(function (e) {
+    handler.open({
+      name: 'npm, Inc.',
+      description: "Enterprise Starter License, $25/month",
+      allowRememberMe: false,
+      panelLabel: "Subscribe",
+      amount: amount
+    });
+    e.preventDefault();
+  });
 
 })
+
 
