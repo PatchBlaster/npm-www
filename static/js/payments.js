@@ -1,6 +1,7 @@
 $(document).ready(function () {
 
   var amount
+  var paymentEndpoint
 
   var handler = StripeCheckout.configure({
     key: $('input[type=hidden]').data('key'),
@@ -9,7 +10,7 @@ $(document).ready(function () {
       token.amount = amount
 
       $.ajax({
-        url: '/joinwhoshiring'
+        url: paymentEndpoint
       , data: JSON.stringify(token)
       , type: 'POST'
       })
@@ -26,6 +27,7 @@ $(document).ready(function () {
 
   $('#one-month').click(function (e) {
     amount = 35000;
+    paymentEndpoint = '/joinwhoshiring'
 
     handler.open({
       name: 'npm, Inc.',
@@ -37,6 +39,7 @@ $(document).ready(function () {
 
   $('#three-months').click(function (e) {
     amount = 100000
+    paymentEndpoint = '/joinwhoshiring'
 
     handler.open({
       name: 'npm, Inc.',
@@ -47,6 +50,8 @@ $(document).ready(function () {
   });
 
   $('#starter-pack').click(function (e) {
+    paymentEndpoint = '/enterprise/starter'
+
     handler.open({
       name: 'npm, Inc.',
       description: "Enterprise Starter License, $25/month",
