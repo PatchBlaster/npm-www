@@ -20,6 +20,7 @@ function payments (req, res) {
     stripe.customers.create({
       card: token.id, // obtained with Stripe.js
       plan: "enterprise-starter-pack",
+      email: token.email,
       description: token.email + " npm Enterprise Starter License"
     }, function(err, charge) {
       if (err) {
