@@ -1,0 +1,21 @@
+<%- include('header.ejs', locals) %>
+
+<h1 class="hiring-header">npm Enterprise Starter License</h1>
+
+<section class="payment">
+
+  <p>Thank you for your interest in the npm Enterprise Starter License!</p>
+
+  <p>The Starter License gives you unlimited private packages for up to 5 active users,
+  and costs $25/month with no additional per-user charges.</p>
+
+  <input type="hidden" data-key="<%= stripeKey %>"/>
+  <button id="starter-pack" class="btn">Enter payment details</button>
+
+</section>
+
+<p>If you have any questions about using this form, please email us at <a href="mailto:support@npmjs.com">support@npmjs.com</a>.</p>
+
+<%- include('footer.ejs', locals) %>
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script src='/static/js/payments.js'></script>

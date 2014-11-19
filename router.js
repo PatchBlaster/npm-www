@@ -73,7 +73,8 @@ router.addRoute('/forgot/:token', forgot)
 router.addRoute('/about', require('./routes/about.js'))
 
 router.addRoute('/whoshiring', require('./routes/whoshiring.js'))
-router.addRoute('/joinwhoshiring', require('./routes/payments.js'))
+router.addRoute('/joinwhoshiring', require('./routes/payments.whoshiring.js'))
+router.addRoute('/enterprise/starter', require('./routes/payments.enterprisestarter.js'))
 
 router.addRoute('/npme-beta', function(req,res) {
   return res.redirect('/enterprise',301)
