@@ -79,6 +79,14 @@
     "show_weight": 1
   },
 
+  "natue": {
+    "id": "natue",
+    "name": "Natue",
+    "description": "<a href='http://jobs.natuelabs.io/jobs/frontend-developer/'>Natue</a> is a Brazilian shop with Berlin-based IT looking for Frontend pros to take performance and accessibility to the next level.",
+    "url": "http://jobs.natuelabs.io/jobs/frontend-developer/",
+    "show_weight": 1
+  },
+
   "newscred": {
     "id": "newscred",
     "name": "NewsCred",
