@@ -1,4 +1,4 @@
-This is the code that runs www.npmjs.org.
+This was the code that ran www.npmjs.org. It has been replaced by [newww](https://github.com/npm/newww).
 
 ## Getting Started
 
